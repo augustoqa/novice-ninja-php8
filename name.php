@@ -1,5 +1,8 @@
 <?php
 
-$name = $_GET['name'];
+$firstname = $_GET['firstname'];
+$lastname = $_GET['lastname'];
+
 echo 'Welcome to our website, ' .
-    htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '!';
+    htmlspecialchars($firstname, ENT_QUOTES, 'UTF-8') . ' ' .
+    htmlspecialchars($lastname, ENT_QUOTES, 'UTF-8') . '!';
