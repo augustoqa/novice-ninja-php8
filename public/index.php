@@ -2,15 +2,20 @@
 try {
     $pdo = new PDO('mysql:host=localhost;dbname=ijdb;charset=utf8mb4', 'ijdbuser', 'admin');
 
-    $sql = 'CREATE TABLE joke (
-        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        joketext TEXT,
-        jokedate DATE NOT NULL
-    ) DEFAULT CHARACTER SET utf8 ENGINE=InnoDB';
+    $insertRows = 0;
+    $sql = "INSERT INTO  `joke` 
+        SET `joketext` = 'A programmer was found dead in the shower. The instructions read: lather, rinse, repeat.', 
+        `jokedate` = '2021-10-29'";
 
-    $pdo->exec($sql);
+    $insertRows = $pdo->exec($sql);
 
-    $output = 'Joke table successfully created.';
+    $sql2 = "INSERT INTO `joke`(`joketext`, `jokedate`)
+        VALUES('A programmer was found dead in the shower. The instructions read: lather, rinse, repeat.', '2021-10-29')";
+
+
+    $insertRows += $pdo->exec($sql2);
+
+    $output = "Inserted {$insertRows} row(s) to the database";
 } catch (PDOException $e) {
     $output = sprintf(
         'Database error: %s in %s:%s',
