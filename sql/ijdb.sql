@@ -11,3 +11,8 @@ CREATE TABLE `joke` (
     `joketext` TEXT,
     `jokedate` DATE NOT NULL
 ) DEFAULT CHARACTER SET utf8 ENGINE=InnoDB;
+
+
+INSERT INTO  `joke`
+SET `joketext` = 'A programmer was found dead in the shower. The instructions read: lather, rinse, repeat.',
+    `jokedate` = '2021-10-29';
