@@ -1,24 +1,11 @@
 <?php
-try {
-    $pdo = new PDO('mysql:host=localhost;dbname=ijdb;charset=utf8mb4', 'ijdbuser', 'admin');
 
-    $sql = 'SELECT `joketext` FROM `joke`';
-    $result = $pdo->query($sql);
+$title = 'Internet Joke Database';
 
-    foreach ($result as $row) {
-        $jokes[] = $row['joketext'];
-    }
+ob_start();
 
-    $title = 'Joke list';
-    
-    $output = include __DIR__ . '/../templates/jokes.html.php';
-} catch (PDOException $e) {
-    $error = sprintf(
-        'Database error: %s in %s:%s',
-        $e->getMessage(),
-        $e->getFile(),
-        $e->getLine()
-    );
-}
+include __DIR__ . '/../templates/home.html.php';
+
+$output = ob_get_clean();
 
 include __DIR__ . '/../templates/layout.html.php';

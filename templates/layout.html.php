@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="jokes.css">
     <title><?= $title ?></title>
 </head>
 <body>
     <header>
-        <h1>Inernet Joke Database</h1>
+        <h1>Internet Joke Database</h1>
     </header>
     <nav>
         <ul>
