@@ -2,12 +2,14 @@
 try {
     $pdo = new PDO('mysql:host=localhost;dbname=ijdb;charset=utf8mb4', 'ijdbuser', 'admin');
 
-    $sql = "UPDATE `joke` SET `jokedate`='2021-04-01' WHERE `joketext` LIKE '%programmer%'";
-    $affectedRows = $pdo->exec($sql);
+    $sql = 'SELECT `joketext` FROM `joke`';
+    $result = $pdo->query($sql);
 
-    $output = "Updated {$affectedRows} row(s)";
+    while ($row = $result->fetch()) {
+        $jokes[] = $row['joketext'];
+    }
 } catch (PDOException $e) {
-    $output = sprintf(
+    $error = sprintf(
         'Database error: %s in %s:%s',
         $e->getMessage(),
         $e->getFile(),
@@ -15,4 +17,4 @@ try {
     );
 }
 
-include __DIR__ . '/../templates/output.html.php';
+include __DIR__ . '/../templates/jokes.html.php';
