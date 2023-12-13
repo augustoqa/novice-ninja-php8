@@ -5,9 +5,20 @@ try {
     $sql = 'SELECT `joketext` FROM `joke`';
     $result = $pdo->query($sql);
 
-   foreach ($result as $row) {
+    foreach ($result as $row) {
         $jokes[] = $row['joketext'];
-   }
+    }
+
+    $title = 'Joke list';
+    $output = '';
+
+    foreach ($jokes as $joke) {
+        $output .= '<blockquote>';
+        $output .= '<p>';
+        $output .= $joke;
+        $output .= '</p>';
+        $output .= '</blockquote>';
+    }
 } catch (PDOException $e) {
     $error = sprintf(
         'Database error: %s in %s:%s',
@@ -17,4 +28,4 @@ try {
     );
 }
 
-include __DIR__ . '/../templates/jokes.html.php';
+include __DIR__ . '/../templates/layout.html.php';
