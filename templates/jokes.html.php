@@ -6,11 +6,11 @@
     </head>
     <body>
         <?php if (isset($error)): ?>
-        <p><?php echo $error ?></p>
+        <p><?= $error ?></p>
         <?php else: ?>
             <?php foreach ($jokes as $joke): ?>
             <blockquote>
-                <p><?php echo htmlspecialchars($joke, ENT_QUOTES, 'UTF-8') ?></p>
+                <p><?= htmlspecialchars($joke, ENT_QUOTES, 'UTF-8') ?></p>
             </blockquote>
             <?php endforeach; ?>
         <?php endif; ?>
