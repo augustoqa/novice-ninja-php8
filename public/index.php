@@ -10,15 +10,8 @@ try {
     }
 
     $title = 'Joke list';
-    $output = '';
-
-    foreach ($jokes as $joke) {
-        $output .= '<blockquote>';
-        $output .= '<p>';
-        $output .= $joke;
-        $output .= '</p>';
-        $output .= '</blockquote>';
-    }
+    
+    $output = include __DIR__ . '/../templates/jokes.html.php';
 } catch (PDOException $e) {
     $error = sprintf(
         'Database error: %s in %s:%s',
