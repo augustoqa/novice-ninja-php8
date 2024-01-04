@@ -1,7 +1,7 @@
 <?php
 
 try {
-	$pdo = new PDO('mysql:host=localhost;dbname=ijdb;charset=utf8mb4', 'ijdbuser', 'admin');
+	include __DIR__ . '/../includes/DatabaseConnection.php';
 
 	$sql = 'DELETE FROM `joke` WHERE `id` = :id';
 
