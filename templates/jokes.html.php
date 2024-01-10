@@ -1,3 +1,5 @@
+<p><?= $totalJokes ?> jokes have been submitted to the Internet Joke Database.</p>
+
 <?php foreach ($jokes as $joke): ?>
 <blockquote>
 	<p>
