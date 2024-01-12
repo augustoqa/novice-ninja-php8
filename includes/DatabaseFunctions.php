@@ -31,3 +31,17 @@ function insertJoke($pdo, $joketext, $authorId)	{
 
 	$stmt->execute($values);
 }
+
+function updateJoke($pdo, $jokeId, $joketext, $authorId) {
+	$stmt = $pdo->prepare('UPDATE `joke` 
+		SET `authorId` = :authorId, `joketext` = :joketext 
+		WHERE `id` = :id');
+
+	$values = [
+		':joketext' => $joketext,
+		':authorId' => $authorId,
+		':id' => $jokeId,
+	];
+
+	$stmt->execute($values);
+}
