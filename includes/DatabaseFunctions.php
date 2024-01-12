@@ -1,5 +1,15 @@
 <?php 
 
+function allJokes($pdo) {
+	$stmt = $pdo->prepare('SELECT `joke`.`id`, `joketext`, `name`, `email`
+		FROM `joke` INNER JOIN `author`
+			ON `authorid` = `author`.`id`');
+
+	$stmt->execute();
+
+	return $stmt->fetchAll();
+}
+
 function totalJokes($pdo)
 {
 	$stmt = $pdo->prepare('SELECT COUNT(*) FROM `joke`');
@@ -44,4 +54,10 @@ function updateJoke($pdo, $jokeId, $joketext, $authorId) {
 	];
 
 	$stmt->execute($values);
+}
+
+function deleteJoke($pdo, $id) {
+	$stmt = $pdo->prepare('DELETE FROM `joke` WHERE `id` = :id');
+
+	$stmt->execute([':id' => $id]);
 }
