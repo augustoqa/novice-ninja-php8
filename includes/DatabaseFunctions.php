@@ -30,34 +30,32 @@ function getJoke($pdo, $id) {
 	return $stmt->fetch();
 }
 
-function insertJoke($pdo, $joketext, $authorId)	{
-	$stmt = $pdo->prepare('INSERT INTO `joke` SET `joketext` = :joketext, `jokedate` = :jokedate, `authorId` = :authorId');
+function insertJoke($pdo, $values)	{
+	$query = 'INSERT INTO `joke` SET ' . getPlaceholder($values);
 
-	$values = [
-		':joketext' => $joketext,
-		':authorId' => $authorId,
-		':jokedate' => date('Y-m-d'),
-	];
-
-	$stmt->execute($values);
+	$pdo->prepare($query)->execute($values);
 }
 
-function updateJoke($pdo, $jokeId, $joketext, $authorId) {
-	$stmt = $pdo->prepare('UPDATE `joke` 
-		SET `authorId` = :authorId, `joketext` = :joketext 
-		WHERE `id` = :id');
+function updateJoke($pdo, $values) {
+	$query = sprintf('UPDATE `joke` SET %s WHERE `id` = :primaryKey', getPlaceholder($values));
 
-	$values = [
-		':joketext' => $joketext,
-		':authorId' => $authorId,
-		':id' => $jokeId,
-	];
+	// Set the :primaryKey variable
+	$values['primaryKey'] = $values['id'];
 
-	$stmt->execute($values);
+	$pdo->prepare($query)->execute($values);
 }
 
 function deleteJoke($pdo, $id) {
 	$stmt = $pdo->prepare('DELETE FROM `joke` WHERE `id` = :id');
 
 	$stmt->execute([':id' => $id]);
+}
+
+function getPlaceholder($values)
+{
+	$placeholder = '';
+	foreach (array_keys($values) as $key) {
+		$placeholder .= "`{$key}` = :{$key},";
+	}
+	return rtrim($placeholder, ',');
 }
