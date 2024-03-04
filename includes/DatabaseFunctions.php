@@ -1,7 +1,7 @@
 <?php 
 
 function allJokes($pdo) {
-	$stmt = $pdo->prepare('SELECT `joke`.`id`, `joketext`, `name`, `email`
+	$stmt = $pdo->prepare('SELECT `joke`.`id`, `joketext`, `jokedate`, `name`, `email`
 		FROM `joke` INNER JOIN `author`
 			ON `authorid` = `author`.`id`');
 
