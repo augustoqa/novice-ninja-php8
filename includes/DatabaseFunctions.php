@@ -33,11 +33,15 @@ function getJoke($pdo, $id) {
 function insertJoke($pdo, $values)	{
 	$query = 'INSERT INTO `joke` SET ' . getPlaceholder($values);
 
+	$values = processDates($values);
+
 	$pdo->prepare($query)->execute($values);
 }
 
 function updateJoke($pdo, $values) {
 	$query = sprintf('UPDATE `joke` SET %s WHERE `id` = :primaryKey', getPlaceholder($values));
+
+	$values = processDates($values);
 
 	// Set the :primaryKey variable
 	$values['primaryKey'] = $values['id'];
@@ -58,4 +62,15 @@ function getPlaceholder($values)
 		$placeholder .= "`{$key}` = :{$key},";
 	}
 	return rtrim($placeholder, ',');
+}
+
+function processDates($values)
+{
+	foreach ($values as $key => $value) {
+		if ($value instanceof DateTime) {
+			$values[$key] = $value->format('Y-m-d H:i:s');
+		}
+	}
+
+	return $values;
 }
