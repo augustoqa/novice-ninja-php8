@@ -1,45 +1,38 @@
 <?php 
 
-function allJokes($pdo) {
-	$stmt = $pdo->prepare('SELECT `joke`.`id`, `joketext`, `jokedate`, `name`, `email`
-		FROM `joke` INNER JOIN `author`
-			ON `authorid` = `author`.`id`');
-
+function findAll($pdo, $table) {
+	$stmt = $pdo->prepare("SELECT * FROM `{$table}`");
 	$stmt->execute();
 
 	return $stmt->fetchAll();
 }
 
-function totalJokes($pdo)
+function total($pdo, $table)
 {
-	$stmt = $pdo->prepare('SELECT COUNT(*) FROM `joke`');
+	$stmt = $pdo->prepare("SELECT COUNT(*) FROM `${table}`");
 	$stmt->execute();
 
-	$row = $stmt->fetch();
-
-	return $row[0];
+	return $stmt->fetch()[0];
 }
 
-function getJoke($pdo, $id) {
-	$stmt = $pdo->prepare('SELECT * FROM `joke` WHERE `id` = :id');
+function find($pdo, $table, $field, $value) {
+	$stmt = $pdo->prepare("SELECT * FROM `${table}` WHERE `{$field}` = :value");
 
-	$values = ['id' => $id];
+	$stmt->execute(['value' => $value]);
 
-	$stmt->execute($values);
-
-	return $stmt->fetch();
+	return $stmt->fetchAll();
 }
 
-function insertJoke($pdo, $values)	{
-	$query = 'INSERT INTO `joke` SET ' . getPlaceholder($values);
+function insert($pdo, $table, $values)	{
+	$query = "INSERT INTO `{$table}` SET " . getPlaceholder($values);
 
 	$values = processDates($values);
 
 	$pdo->prepare($query)->execute($values);
 }
 
-function updateJoke($pdo, $values) {
-	$query = sprintf('UPDATE `joke` SET %s WHERE `id` = :primaryKey', getPlaceholder($values));
+function update($pdo, $table, $primaryKey, $values) {
+	$query = sprintf("UPDATE `{$table}` SET %s WHERE `{$primaryKey}` = :primaryKey", getPlaceholder($values));
 
 	$values = processDates($values);
 
@@ -49,10 +42,10 @@ function updateJoke($pdo, $values) {
 	$pdo->prepare($query)->execute($values);
 }
 
-function deleteJoke($pdo, $id) {
-	$stmt = $pdo->prepare('DELETE FROM `joke` WHERE `id` = :id');
+function delete($pdo, $table, $field, $value) {
+	$stmt = $pdo->prepare("DELETE FROM `{$table}` WHERE `{$field}` = :value");
 
-	$stmt->execute([':id' => $id]);
+	$stmt->execute([':value' => $value]);
 }
 
 function getPlaceholder($values)
