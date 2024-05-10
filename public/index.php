@@ -1,11 +1,36 @@
 <?php
 
-$title = 'Internet Joke Database';
+try {
+	include __DIR__ . '/../includes/DatabaseConnection.php';
+	include __DIR__ . '/../classes/DatabaseTable.php';
+	include __DIR__ . '/../controllers/JokeController.php';
 
-ob_start();
+	$jokesTable   = new DatabaseTable($pdo, 'joke', 'id');
+	$authorsTable = new DatabaseTable($pdo, 'author', 'id');
 
-include __DIR__ . '/../templates/home.html.php';
+	$jokeController = new JokeController($jokesTable, $authorsTable);
 
-$output = ob_get_clean();
+	if (isset($_GET['edit'])) {
+		$page = $jokeController->edit();
+	} else if (isset($_GET['delete'])) {
+		$page = $jokeController->delete();
+	} else if (isset($_GET['list'])) {
+		$page = $jokeController->list();
+	} else {
+		$page = $jokeController->home();
+	}
+
+	$title = $page['title'];
+	$output = $page['output'];
+} catch (PDOException $e) {
+	$title = 'An error has occurred';
+
+	$output = sprintf(
+		'Unable to connect to the database server: %s in %s:%s',
+		$e->getMessage(),
+		$e->getFile(),
+		$e->getLine(),
+	);
+}
 
 include __DIR__ . '/../templates/layout.html.php';
