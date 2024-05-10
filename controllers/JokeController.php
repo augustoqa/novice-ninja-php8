@@ -8,15 +8,9 @@ class JokeController {
 
 	public function home()
 	{
-		ob_start();
-
-		include __DIR__ . '/../templates/home.html.php';
-
-		$output = ob_get_clean();
-
 		return [
-			'output' => $output, 
-			'title'  => 'Internet Joke Database',
+			'template' => 'home.html.php', 
+			'title'    => 'Internet Joke Database'
 		];
 	}
 
@@ -39,13 +33,14 @@ class JokeController {
 
 	    $totalJokes =  $this->jokesTable->total();
 
-	    ob_start();
-
-	    include __DIR__ . '/../templates/jokes.html.php';
-
-	    $output = ob_get_clean();
-
-	    return ['output' => $output, 'title' => 'Joke list'];
+	    return [
+			'template'  => 'jokes.html.php', 
+			'title'     => 'Joke list',
+			'variables' => [
+				'totalJokes' => $totalJokes,
+				'jokes'      => $jokes,
+	    	]
+	    ];
 	}
 
 	public function edit()
@@ -65,13 +60,11 @@ class JokeController {
 				$joke = $this->jokesTable->find('id', $_GET['id'])[0] ?? null;
 			}
 
-			ob_start();
-
-			include __DIR__ . '/../templates/editjoke.html.php';
-
-			$output = ob_get_clean();
-
-			return ['output' => $output, 'title' => 'Edit joke'];
+			return [
+				'template' => 'editjoke.html.php', 
+				'title' => 'Edit joke',
+				'variables' => ['joke' => $joke]
+			];
 		}
 	}
 
