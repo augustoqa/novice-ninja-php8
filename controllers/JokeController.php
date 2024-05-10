@@ -79,6 +79,6 @@ class JokeController {
 	{
 		$this->jokesTable->delete('id', $_POST['id']);
 
-		header('location: jokes.php');
+		header('location: index.php?action=list');
 	}
 }
