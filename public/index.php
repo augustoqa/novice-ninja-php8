@@ -22,7 +22,15 @@ try {
 	$jokeController = new JokeController($jokesTable, $authorsTable);
 
 	$action = $_GET['action'] ?? 'home';
-	$page = $jokeController->$action();
+
+	if ($action == strtolower($action)) {
+		$page = $jokeController->$action();
+	} else {
+		http_response_code(301);
+		header('location: index.php?action=' . strtolower($action));
+		exit;
+	}
+
 
 	$title = $page['title'];
 
