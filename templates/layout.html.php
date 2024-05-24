@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="jokes.css">
+    <link rel="stylesheet" href="/jokes.css">
     <title><?= $title ?></title>
 </head>
 <body>
@@ -11,9 +11,9 @@
     </header>
     <nav>
         <ul>
-            <li><a href="index.php">Home</a></li>
-            <li><a href="index.php?controller=joke&amp;action=list">Jokes List</a></li>
-            <li><a href="index.php?controller=joke&amp;action=edit">Add a new Joke</a></li>
+            <li><a href="">Home</a></li>
+            <li><a href="/joke/list">Jokes List</a></li>
+            <li><a href="/joke/edit">Add a new Joke</a></li>
         </ul>
     </nav>
 
