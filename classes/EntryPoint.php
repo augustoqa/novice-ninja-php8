@@ -2,6 +2,8 @@
 
 class EntryPoint {
 
+	public function __construct(private $website){}
+
 	private function loadTemplate($templateFileName, $variables = [])
 	{
 		extract($variables);
@@ -24,18 +26,10 @@ class EntryPoint {
 	public function run($uri)
 	{
 		try {
-			include __DIR__ . '/../includes/DatabaseConnection.php';
-			include __DIR__ . '/../classes/DatabaseTable.php';
-			include __DIR__ . '/../controllers/JokeController.php';
-			// include __DIR__ . '/../controllers/AuthorController.php';
-
-			$jokesTable   = new DatabaseTable($pdo, 'joke', 'id');
-			$authorsTable = new DatabaseTable($pdo, 'author', 'id');
-
 			$this->checkURI($uri);
 
 			if ($uri == '') {
-				$uri = 'joke/home';
+				$uri = $this->website->getDefaultRoute();
 			}
 
 			$route = explode('/', $uri);
@@ -43,11 +37,7 @@ class EntryPoint {
 			$controllerName = array_shift($route);
 			$action = array_shift($route);
 
-			if ($controllerName === 'joke') {
-				$controller = new JokeController($jokesTable, $authorsTable);
-			} else if ($controllerName === 'author') {
-				$controller = new AuthorController($authorsTable);
-			}
+			$controller = $this->website->getController($controllerName);
 
 			$page = $controller->$action(...$route);
 
