@@ -2,7 +2,9 @@
 
 function autoloader($className)
 {
-	include __DIR__ . "/../classes/{$className}.php";
+	$fileName = str_replace('\\', '/', $className) . '.php';
+
+	include __DIR__ . "/../{$fileName}";
 }
 
 spl_autoload_register('autoloader');

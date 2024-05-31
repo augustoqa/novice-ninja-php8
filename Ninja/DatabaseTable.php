@@ -1,7 +1,9 @@
 <?php
 
+namespace Ninja;
+
 class DatabaseTable {
-	public function __construct(private PDO $pdo, private string $table, private string $primaryKey)
+	public function __construct(private \PDO $pdo, private string $table, private string $primaryKey)
 	{
 	}
 
@@ -56,7 +58,7 @@ class DatabaseTable {
 				unset($record[$this->primaryKey]);
 			}
 			$this->insert($record);
-		} catch (PDOException $e) {
+		} catch (\PDOException $e) {
 			$this->update($record);
 		}
 	}
@@ -79,7 +81,7 @@ class DatabaseTable {
 	private function processDates($values)
 	{
 		foreach ($values as $key => $value) {
-			if ($value instanceof DateTime) {
+			if ($value instanceof \DateTime) {
 				$values[$key] = $value->format('Y-m-d H:i:s');
 			}
 		}
