@@ -4,7 +4,7 @@ namespace Ninja;
 
 class EntryPoint {
 
-	public function __construct(private $website){}
+	public function __construct(private Website $website){}
 
 	private function loadTemplate($templateFileName, $variables = [])
 	{
@@ -25,7 +25,7 @@ class EntryPoint {
 		}
 	}
 
-	public function run($uri, $method)
+	public function run(string $uri, string $method)
 	{
 		try {
 			$this->checkURI($uri);

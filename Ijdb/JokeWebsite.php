@@ -5,14 +5,14 @@ namespace Ijdb;
 use Ninja\DatabaseTable;
 use Ijdb\Controllers\Joke as JokeController;
 
-class JokeWebsite 
+class JokeWebsite implements \Ninja\Website 
 {
-	public function getDefaultRoute()
+	public function getDefaultRoute(): string
 	{
 		return 'joke/home';
 	}
 
-	public function getController(string $controllerName)
+	public function getController(string $controllerName): object
 	{
 		$pdo = new \PDO(
 			'mysql:host=localhost;dbname=ijdb;charset=utf8mb4', 
