@@ -1,6 +1,6 @@
 <?php
 
-include __DIR__ . '/../includes/autoload.php';
+include __DIR__ . '/../vendor/autoload.php';
 
 $uri = strtok(ltrim($_SERVER['REQUEST_URI'], '/'), '?');
 
