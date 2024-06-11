@@ -12,7 +12,7 @@ class JokeWebsite implements \Ninja\Website
 		return 'joke/home';
 	}
 
-	public function getController(string $controllerName): object
+	public function getController(string $controllerName): ?object
 	{
 		$pdo = new \PDO(
 			'mysql:host=localhost;dbname=ijdb;charset=utf8mb4', 
@@ -29,6 +29,6 @@ class JokeWebsite implements \Ninja\Website
 			$controller = new \Ijdb\Controllers\AuthorController($authorsTable);
 		}
 
-		return $controller;
+		return $controller ?? null;
 	}
 }

@@ -45,12 +45,18 @@ class EntryPoint {
 
 			$controller = $this->website->getController($controllerName);
 
-			$page = $controller->$action(...$route);
+			if (is_callable([$controller, $action])) {
+				$page = $controller->$action(...$route);
 
-			$title = $page['title'];
+				$title = $page['title'];
 
-			$variables = $page['variables'] ?? [];
-			$output = $this->loadTemplate($page['template'], $variables);
+				$variables = $page['variables'] ?? [];
+				$output = $this->loadTemplate($page['template'], $variables);
+			} else {
+				http_response_code(404);
+				$title = 'Not found';
+				$output = 'Sorry, the page your are looking for could not be found.';
+			}
 		} catch (PDOException $e) {
 			$title = 'An error has occurred';
 
