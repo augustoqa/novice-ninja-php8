@@ -8,7 +8,7 @@
 	</ul>
 </div>
 <?php endif ?>
-<form action="" method="post">
+<form action="" method="post" novalidate>
 	<label for="email">Your email address</label>
 	<input type="email" name="author[email]" value="<?= $author['email'] ?? '' ?>" id="email">
 
