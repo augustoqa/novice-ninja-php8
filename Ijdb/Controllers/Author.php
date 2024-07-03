@@ -28,8 +28,33 @@ class Author
 	{
 		$author = $_POST['author'];
 
-		$this->authorsTable->save($author);
+		$errors = [];
 
-		header('Location: /author/success');
+		if (empty($author['name'])) {
+			$errors[] = 'Name cannot be blank';
+		}
+
+		if (empty($author['email'])) {
+			$errors[] = 'Email cannot be blank';
+		}
+
+		if (empty($author['passwordjjj'])) {
+			$errors[] = 'Password cannot be blank';
+		}
+
+		if (empty($errors)) {
+			$this->authorsTable->save($author);
+
+			header('Location: /author/success');
+		} else {
+			return [
+				'template'  => 'register.html.php',
+				'title'     => 'Register an account',
+				'variables' => [
+					'errors' => $errors,
+					'author' => $author,
+				],
+			];
+		}
 	}
 }
