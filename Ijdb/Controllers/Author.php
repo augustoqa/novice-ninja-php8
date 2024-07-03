@@ -38,6 +38,12 @@ class Author
 			$errors[] = 'Email cannot be blank';
 		} elseif (filter_var($author['email'], FILTER_VALIDATE_EMAIL) == false) {
 			$errors[] = 'Invalid email address';
+		} else { // check if the email already exists
+			$author['email'] = strtolower($author['email']);
+
+			if (count($this->authorsTable->find('email', $author['email'])) > 0) {
+				$errors[] = 'That email address is already registered';
+			}
 		}
 
 		if (empty($author['password'])) {
@@ -45,6 +51,8 @@ class Author
 		}
 
 		if (empty($errors)) {
+			$author['password'] = password_hash($author['password'], PASSWORD_DEFAULT);
+
 			$this->authorsTable->save($author);
 
 			header('Location: /author/success');
