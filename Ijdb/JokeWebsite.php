@@ -4,6 +4,7 @@ namespace Ijdb;
 
 use Ninja\DatabaseTable;
 use Ijdb\Controllers\Joke as JokeController;
+use Ijdb\Controllers\Author as AuthorController;
 
 class JokeWebsite implements \Ninja\Website 
 {
@@ -26,7 +27,7 @@ class JokeWebsite implements \Ninja\Website
 		if ($controllerName === 'joke') {
 			$controller = new JokeController($jokesTable, $authorsTable);
 		} else if ($controllerName === 'author') {
-			$controller = new \Ijdb\Controllers\AuthorController($authorsTable);
+			$controller = new AuthorController($authorsTable);
 		}
 
 		return $controller ?? null;
