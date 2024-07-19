@@ -1,9 +1,0 @@
-<?php
-
-include __DIR__ . '/../vendor/autoload.php';
-
-$uri = strtok(ltrim($_SERVER['REQUEST_URI'], '/'), '?');
-
-$jokeWebsite = new \Ijdb\JokeWebsite();
-$entryPoint = new \Ninja\EntryPoint($jokeWebsite);
-$entryPoint->run($uri, $_SERVER['REQUEST_METHOD']);
