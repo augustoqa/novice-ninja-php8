@@ -2,18 +2,18 @@
 
 namespace Ijdb;
 
-use Ninja\DatabaseTable;
-use Ijdb\Controllers\Joke as JokeController;
 use Ijdb\Controllers\Author as AuthorController;
+use Ijdb\Controllers\Joke as JokeController;
+use Ninja\Authentication;
+use Ninja\DatabaseTable;
 
 class JokeWebsite implements \Ninja\Website 
 {
-	public function getDefaultRoute(): string
-	{
-		return 'joke/home';
-	}
+	private DatabaseTable $jokesTable;
+	private DatabaseTable $authorsTable;
+	private Authentication $authentication;
 
-	public function getController(string $controllerName): ?object
+	public function __construct()
 	{
 		$pdo = new \PDO(
 			'mysql:host=localhost;dbname=ijdb;charset=utf8mb4', 
@@ -21,15 +21,37 @@ class JokeWebsite implements \Ninja\Website
 			'admin'
 		);
 
-		$jokesTable   = new DatabaseTable($pdo, 'joke', 'id');
-		$authorsTable = new DatabaseTable($pdo, 'author', 'id');
+		$this->jokesTable   = new DatabaseTable($pdo, 'joke', 'id');
+		$this->authorsTable = new DatabaseTable($pdo, 'author', 'id');
 
+		$this->authentication = new Authentication($this->authorsTable, 'email', 'password');
+	}
+
+	public function getDefaultRoute(): string
+	{
+		return 'joke/home';
+	}
+
+	public function getController(string $controllerName): ?object
+	{
 		if ($controllerName === 'joke') {
-			$controller = new JokeController($jokesTable, $authorsTable);
+			$controller = new JokeController($this->jokesTable, $this->authorsTable);
 		} else if ($controllerName === 'author') {
-			$controller = new AuthorController($authorsTable);
+			$controller = new AuthorController($this->authorsTable);
 		}
 
 		return $controller ?? null;
+	}
+
+	public function checkLogin(string $uri): ?string
+	{
+		$restrictedPages = ['joke/edit', 'joke/delete'];
+
+		if (in_array($uri, $restrictedPages) && !$this->authentication->isLoggedIn()) {
+			header('location: /login/login');
+			exit();
+		}
+
+		return $uri;
 	}
 }
