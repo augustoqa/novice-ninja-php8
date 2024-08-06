@@ -4,6 +4,7 @@ namespace Ijdb;
 
 use Ijdb\Controllers\Author as AuthorController;
 use Ijdb\Controllers\Joke as JokeController;
+use Ijdb\Controllers\Login as LoginController;
 use Ninja\Authentication;
 use Ninja\DatabaseTable;
 
@@ -27,6 +28,11 @@ class JokeWebsite implements \Ninja\Website
 		$this->authentication = new Authentication($this->authorsTable, 'email', 'password');
 	}
 
+	public function getLayoutVariables(): array
+	{
+		return ['loggedIn' => $this->authentication->isLoggedIn()];
+	}
+
 	public function getDefaultRoute(): string
 	{
 		return 'joke/home';
@@ -38,6 +44,8 @@ class JokeWebsite implements \Ninja\Website
 			$controller = new JokeController($this->jokesTable, $this->authorsTable);
 		} else if ($controllerName === 'author') {
 			$controller = new AuthorController($this->authorsTable);
+		} else if ($controllerName === 'login') {
+			$controller = new LoginController($this->authentication);
 		}
 
 		return $controller ?? null;

@@ -70,7 +70,11 @@ class EntryPoint {
 			);
 		}
 
-		include __DIR__ . '/../templates/layout.html.php';
+		$layoutVariables = $this->website->getLayoutVariables();
+		$layoutVariables['title'] = $title;
+		$layoutVariables['output'] = $output;
+
+		echo $this->loadTemplate('layout.html.php', $layoutVariables);
 	}
 
 }
