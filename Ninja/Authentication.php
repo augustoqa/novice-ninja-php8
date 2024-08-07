@@ -51,6 +51,6 @@ class Authentication {
 	{
 		return $this->isLoggedIn() 
 			? $this->users->find($this->usernameColumn, strtolower($_SESSION['username']))[0]
-			: false;
+			: null;
 	}
 }
