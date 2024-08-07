@@ -46,4 +46,11 @@ class Authentication {
 		unset($_SESSION['password']);
 		session_regenerate_id();
 	}
+
+	public function getUser(): ?array
+	{
+		return $this->isLoggedIn() 
+			? $this->users->find($this->usernameColumn, strtolower($_SESSION['username']))[0]
+			: false;
+	}
 }
