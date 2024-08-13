@@ -55,6 +55,8 @@ class Joke {
 
 	public function edit($id = null)
 	{
+		$author = $this->authentication->getUser();
+
 		if (isset($id)) {
 			$joke = $this->jokesTable->find('id', $id)[0] ?? null;
 		}
@@ -62,13 +64,24 @@ class Joke {
 		return [
 			'template' => 'editjoke.html.php', 
 			'title' => 'Edit joke',
-			'variables' => ['joke' => $joke ?? null],
+			'variables' => [
+				'joke' => $joke ?? null,
+				'userId' => $author['id'] ?? null,
+			],
 		];
 	}
 
-	public function editSubmit()
+	public function editSubmit($id = null)
 	{
 		$author = $this->authentication->getUser();
+
+		if (isset($id)) {
+			$joke = $this->jokesTable->find('id', $id)[0] ?? null;
+
+			if ($joke['authorid'] != $author['id']) {
+				return;
+			}
+		}
 
 		$joke = $_POST['joke'];
 		$joke['authorid'] = $author['id'];
@@ -81,6 +94,14 @@ class Joke {
 
 	public function deleteSubmit()
 	{
+		$author = $this->authentication->getUser();
+
+		$joke = $this->jokesTable->find('id', $_POST['id'])[0];
+
+		if ($joke['authorid'] != $author['id']) {
+			return;
+		}
+
 		$this->jokesTable->delete('id', $_POST['id']);
 
 		header('location: /joke/list');
