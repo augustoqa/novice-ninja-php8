@@ -23,7 +23,9 @@ class JokeWebsite implements \Ninja\Website
 		);
 
 		$this->jokesTable   = new DatabaseTable($pdo, 'joke', 'id');
-		$this->authorsTable = new DatabaseTable($pdo, 'author', 'id');
+		$this->authorsTable = new DatabaseTable(
+			$pdo, 'author', 'id', \Ijdb\Entity\Author::class, [$this->jokesTable]
+		);
 
 		$this->authentication = new Authentication($this->authorsTable, 'email', 'password');
 	}

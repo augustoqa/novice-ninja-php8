@@ -3,7 +3,13 @@
 namespace Ninja;
 
 class DatabaseTable {
-	public function __construct(private \PDO $pdo, private string $table, private string $primaryKey)
+	public function __construct(
+		private \PDO $pdo, 
+		private string $table, 
+		private string $primaryKey,
+		private string $className = '\stdClass',
+		private array $constructorArgs = []
+	)
 	{
 	}
 
@@ -11,7 +17,11 @@ class DatabaseTable {
 		$stmt = $this->pdo->prepare("SELECT * FROM `{$this->table}`");
 		$stmt->execute();
 
-		return $stmt->fetchAll();
+		return $stmt->fetchAll(
+			\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, 
+			$this->className, 
+			$this->constructorArgs
+		);
 	}
 
 	public function total()
@@ -27,7 +37,11 @@ class DatabaseTable {
 
 		$stmt->execute(['value' => $value]);
 
-		return $stmt->fetchAll();
+		return $stmt->fetchAll(
+			\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, 
+			$this->className, 
+			$this->constructorArgs
+		);
 	}
 
 	private function insert($values)	{

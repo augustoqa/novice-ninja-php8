@@ -67,7 +67,7 @@ class Joke {
 			'title' => 'Edit joke',
 			'variables' => [
 				'joke' => $joke ?? null,
-				'userId' => $author['id'] ?? null,
+				'userId' => $author->id ?? null,
 			],
 		];
 	}
@@ -79,26 +79,15 @@ class Joke {
 		if (isset($id)) {
 			$joke = $this->jokesTable->find('id', $id)[0] ?? null;
 
-			if ($joke['authorid'] != $author['id']) {
+			if ($joke->authorid != $author->id) {
 				return;
 			}
 		}
 
-		// Create an `Author` entity instance
-		$authorObject = new Author($this->jokesTable);
-
-		// Copy the values from the `$author` array into the corresponding properties in the entry object
-		$authorObject->id = $author['id'];
-		$authorObject->name = $author['name'];
-		$authorObject->email = $author['email'];
-		$authorObject->password = $author['password'];
-
-		// Read the form submission and set the date
 		$joke = $_POST['joke'];
 		$joke['jokedate'] = new \DateTime();
 
-		// Save the joke using the new addJoke method
-		$authorObject->addJoke($joke);
+		$author->addJoke($joke);
 
 		header('location: /joke/list');
 	}
