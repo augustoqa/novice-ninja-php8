@@ -5,13 +5,14 @@ namespace Ijdb;
 use Ijdb\Controllers\Author as AuthorController;
 use Ijdb\Controllers\Joke as JokeController;
 use Ijdb\Controllers\Login as LoginController;
+use Ijdb\Entity\{Joke, Author};
 use Ninja\Authentication;
 use Ninja\DatabaseTable;
 
 class JokeWebsite implements \Ninja\Website 
 {
-	private DatabaseTable $jokesTable;
-	private DatabaseTable $authorsTable;
+	private ?DatabaseTable $jokesTable;
+	private ?DatabaseTable $authorsTable;
 	private Authentication $authentication;
 
 	public function __construct()
@@ -22,9 +23,11 @@ class JokeWebsite implements \Ninja\Website
 			'admin'
 		);
 
-		$this->jokesTable   = new DatabaseTable($pdo, 'joke', 'id');
+		$this->jokesTable   = new DatabaseTable(
+			$pdo, 'joke', 'id', Joke::class, [&$this->authorsTable]
+		);
 		$this->authorsTable = new DatabaseTable(
-			$pdo, 'author', 'id', \Ijdb\Entity\Author::class, [$this->jokesTable]
+			$pdo, 'author', 'id', Author::class, [&$this->jokesTable]
 		);
 
 		$this->authentication = new Authentication($this->authorsTable, 'email', 'password');

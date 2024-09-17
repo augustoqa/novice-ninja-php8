@@ -23,24 +23,8 @@ class Joke {
 
 	public function list()
 	{	
-	    $result = $this->jokesTable->findAll();
-
-	    $jokes = [];
-	    foreach ($result as $joke) {
-	        $author = $this->authorsTable->find('id', $joke->authorid)[0];
-
-	        $jokes[] = [
-	            'id'       => $joke->id,
-	            'joketext' => $joke->joketext,
-	            'jokedate' => $joke->jokedate,
-	            'authorid' => $joke->authorid,
-	            'name'     => $author->name,
-	            'email'    => $author->email,
-	        ];
-	    }
-
+	    $jokes = $this->jokesTable->findAll();
 	    $totalJokes =  $this->jokesTable->total();
-
 	    $user = $this->authentication->getUser();
 
 	    return [
