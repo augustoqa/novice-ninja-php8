@@ -48,21 +48,14 @@ class JokeWebsite implements \Ninja\Website
 
 	public function getController(string $controllerName): ?object
 	{
-		if ($controllerName === 'joke') {
-			$controller = new JokeController(
-				$this->jokesTable, 
-				$this->authorsTable, 
-				$this->authentication
-			);
-		} else if ($controllerName === 'author') {
-			$controller = new AuthorController($this->authorsTable);
-		} else if ($controllerName === 'login') {
-			$controller = new LoginController($this->authentication);
-		} else if ($controllerName === 'category') {
-            $controller = new CategoryController($this->categoriesTable);
-        }
+        $controllers = [
+            'joke' => new JokeController($this->jokesTable, $this->authorsTable, $this->authentication),
+			'author' => new AuthorController($this->authorsTable),
+			'login' => new LoginController($this->authentication),
+            'category' => new CategoryController($this->categoriesTable),
+        ];
 
-		return $controller ?? null;
+		return $controllers[$controllerName] ?? null;
 	}
 
 	public function checkLogin(string $uri): ?string
