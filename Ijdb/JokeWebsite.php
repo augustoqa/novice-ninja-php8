@@ -3,6 +3,7 @@
 namespace Ijdb;
 
 use Ijdb\Controllers\Author as AuthorController;
+use Ijdb\Controllers\Category as CategoryController;
 use Ijdb\Controllers\Joke as JokeController;
 use Ijdb\Controllers\Login as LoginController;
 use Ijdb\Entity\{Joke, Author};
@@ -13,6 +14,7 @@ class JokeWebsite implements \Ninja\Website
 {
 	private ?DatabaseTable $jokesTable;
 	private ?DatabaseTable $authorsTable;
+    private ?DatabaseTable $categoriesTable;
 	private Authentication $authentication;
 
 	public function __construct()
@@ -29,6 +31,7 @@ class JokeWebsite implements \Ninja\Website
 		$this->authorsTable = new DatabaseTable(
 			$pdo, 'author', 'id', Author::class, [&$this->jokesTable]
 		);
+        $this->categoriesTable = new DatabaseTable($pdo, 'category', 'id');
 
 		$this->authentication = new Authentication($this->authorsTable, 'email', 'password');
 	}
@@ -55,7 +58,9 @@ class JokeWebsite implements \Ninja\Website
 			$controller = new AuthorController($this->authorsTable);
 		} else if ($controllerName === 'login') {
 			$controller = new LoginController($this->authentication);
-		}
+		} else if ($controllerName === 'category') {
+            $controller = new CategoryController($this->categoriesTable);
+        }
 
 		return $controller ?? null;
 	}

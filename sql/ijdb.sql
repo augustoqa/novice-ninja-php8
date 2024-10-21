@@ -69,3 +69,9 @@ CREATE TABLE author (
   email VARCHAR(100),
   password VARCHAR(255)
 ) DEFAULT CHARACTER SET utf8mb4 ENGINE=InnoDB;
+
+CREATE TABLE `ijdb`.`category` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NULL,
+    PRIMARY KEY (`id`)
+);
