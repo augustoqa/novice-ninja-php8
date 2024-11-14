@@ -48,7 +48,9 @@ main {
 	background-color: #f7f7f7;
 	width: 1000px;
 	margin: auto;
-	box-shadow: -1000px 0 0 #f7f7f7, 1000px 0 0 #f7f7f7;
+	box-shadow:
+		-1000px 0 0 #f7f7f7,
+		1000px 0 0 #f7f7f7;
 	padding-top: 20px;
 }
 
@@ -119,4 +121,17 @@ blockquote form {
 
 .errors ul {
 	margin-left: 1em;
+}
+
+form p {
+	clear: both;
+}
+input[type="checkbox"] {
+	float: left;
+	clear: left;
+	width: auto;
+	margin-right: 10px;
+}
+input[type="checkbox"] + label {
+	clear: right;
 }

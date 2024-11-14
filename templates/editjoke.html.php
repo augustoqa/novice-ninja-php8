@@ -7,6 +7,13 @@
 		cols="40" 
 		rows="3"
 	><?= $joke->joketext ?? '' ?></textarea>
+
+	<p>Select categories for this joke:</p>
+	<?php foreach ($categories as $category): ?>
+	<input type="checkbox" name="category[]" value="<?= $category->id ?>" />
+	<label><?= $category->name ?></label>
+	<?php endforeach ?>
+
 	<input type="submit" value="Save">
 </form>
 <?php else: ?>

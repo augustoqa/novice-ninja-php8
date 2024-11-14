@@ -22,6 +22,6 @@ class Author {
 		// set the `authorid` in the new joke to the id stored in this instance
 		$joke['authorid'] = $this->id;
 
-		$this->jokesTable->save($joke);
+		return $this->jokesTable->save($joke);
 	}
 }

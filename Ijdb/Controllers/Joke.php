@@ -11,6 +11,7 @@ class Joke {
 	public function __construct(
 		private DatabaseTable $jokesTable, 
 		private DatabaseTable $authorsTable,
+		private DatabaseTable $categoriesTable,
 		private Authentication $authentication){}
 
 	public function home()
@@ -41,6 +42,7 @@ class Joke {
 	public function edit($id = null)
 	{
 		$author = $this->authentication->getUser();
+		$categories = $this->categoriesTable->findAll();
 
 		if (isset($id)) {
 			$joke = $this->jokesTable->find('id', $id)[0] ?? null;
@@ -52,6 +54,7 @@ class Joke {
 			'variables' => [
 				'joke' => $joke ?? null,
 				'userId' => $author->id ?? null,
+				'categories' => $categories,
 			],
 		];
 	}
@@ -71,7 +74,11 @@ class Joke {
 		$joke = $_POST['joke'];
 		$joke['jokedate'] = new \DateTime();
 
-		$author->addJoke($joke);
+		$jokeEntity = $author->addJoke($joke);
+
+		foreach ($_POST['category'] as $categoryId) {
+			$jokeEntity->addCategory($categoryId);
+		}
 
 		header('location: /joke/list');
 	}

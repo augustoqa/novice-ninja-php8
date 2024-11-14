@@ -75,3 +75,12 @@ CREATE TABLE `ijdb`.`category` (
     `name` VARCHAR(255) NULL,
     PRIMARY KEY (`id`)
 );
+
+INSERT INTO `category` (`name`) 
+  VALUES ('programming jokes'), ('knock-knock jokes'), ('one-liners'), ('puns');
+
+CREATE TABLE `ijdb`.`joke_category` (
+  `jokeId` INT NOT NULL,
+  `categoryId` INT NOT NULL,
+  PRIMARY KEY (`jokeId`, `categoryId`)
+);

@@ -15,6 +15,7 @@ class JokeWebsite implements \Ninja\Website
 	private ?DatabaseTable $jokesTable;
 	private ?DatabaseTable $authorsTable;
     private ?DatabaseTable $categoriesTable;
+    private ?DatabaseTable $jokeCategoriesTable;
 	private Authentication $authentication;
 
 	public function __construct()
@@ -26,7 +27,7 @@ class JokeWebsite implements \Ninja\Website
 		);
 
 		$this->jokesTable   = new DatabaseTable(
-			$pdo, 'joke', 'id', Joke::class, [&$this->authorsTable]
+			$pdo, 'joke', 'id', Joke::class, [&$this->authorsTable, &$this->jokeCategoriesTable]
 		);
 		$this->authorsTable = new DatabaseTable(
 			$pdo, 'author', 'id', Author::class, [&$this->jokesTable]
@@ -34,6 +35,7 @@ class JokeWebsite implements \Ninja\Website
         $this->categoriesTable = new DatabaseTable($pdo, 'category', 'id');
 
 		$this->authentication = new Authentication($this->authorsTable, 'email', 'password');
+		$this->jokeCategoriesTable = new DatabaseTable($pdo, 'joke_category', 'categoryId');
 	}
 
 	public function getLayoutVariables(): array
@@ -49,7 +51,12 @@ class JokeWebsite implements \Ninja\Website
 	public function getController(string $controllerName): ?object
 	{
         $controllers = [
-            'joke' => new JokeController($this->jokesTable, $this->authorsTable, $this->authentication),
+            'joke' => new JokeController(
+            	$this->jokesTable, 
+            	$this->authorsTable, 
+            	$this->categoriesTable,
+            	$this->authentication
+            ),
 			'author' => new AuthorController($this->authorsTable),
 			'login' => new LoginController($this->authentication),
             'category' => new CategoryController($this->categoriesTable),

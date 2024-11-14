@@ -2,6 +2,8 @@
 
 namespace Ijdb\Entity;
 
+use Ninja\DatabaseTable;
+
 class Joke {
 	public int $id;
 	public int $authorid;
@@ -9,7 +11,9 @@ class Joke {
 	public string $joketext;
 	private ?object $author;
 
-	public function __construct(private \Ninja\DatabaseTable $authorsTable)
+	public function __construct(
+		private DatabaseTable $authorsTable,
+		private DatabaseTable $jokeCategoriesTable)
 	{
 	}
 
@@ -20,5 +24,12 @@ class Joke {
 		}
 
 		return $this->author;
+	}
+
+	public function addCategory($categoryId)
+	{
+		$jokeCat = ['jokeId' => $this->id, 'categoryId' => $categoryId];
+
+		$this->jokeCategoriesTable->save($jokeCat);
 	}
 }
