@@ -35,6 +35,7 @@ class Joke {
 				'totalJokes' => $totalJokes,
 				'jokes'      => $jokes,
 				'userId'	 => $user->id ?? null,
+				'categories' => $this->categoriesTable->findAll(),
 	    	]
 	    ];
 	}
