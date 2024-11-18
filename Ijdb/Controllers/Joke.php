@@ -22,9 +22,15 @@ class Joke {
 		];
 	}
 
-	public function list()
+	public function list($categoryId = null)
 	{	
-	    $jokes = $this->jokesTable->findAll();
+		if (isset($categoryId)) {
+			$category = $this->categoriesTable->find('id', $categoryId)[0];
+			$jokes = $category->getJokes();
+		} else {
+	    	$jokes = $this->jokesTable->findAll();
+		}
+		
 	    $totalJokes =  $this->jokesTable->total();
 	    $user = $this->authentication->getUser();
 

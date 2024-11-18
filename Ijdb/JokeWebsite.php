@@ -6,7 +6,7 @@ use Ijdb\Controllers\Author as AuthorController;
 use Ijdb\Controllers\Category as CategoryController;
 use Ijdb\Controllers\Joke as JokeController;
 use Ijdb\Controllers\Login as LoginController;
-use Ijdb\Entity\{Joke, Author};
+use Ijdb\Entity\{Joke, Author, Category};
 use Ninja\Authentication;
 use Ninja\DatabaseTable;
 
@@ -32,7 +32,9 @@ class JokeWebsite implements \Ninja\Website
 		$this->authorsTable = new DatabaseTable(
 			$pdo, 'author', 'id', Author::class, [&$this->jokesTable]
 		);
-        $this->categoriesTable = new DatabaseTable($pdo, 'category', 'id');
+        $this->categoriesTable = new DatabaseTable(
+        	$pdo, 'category', 'id', Category::class, [&$this->jokesTable, &$this->jokeCategoriesTable]
+        );
 
 		$this->authentication = new Authentication($this->authorsTable, 'email', 'password');
 		$this->jokeCategoriesTable = new DatabaseTable($pdo, 'joke_category', 'categoryId');
