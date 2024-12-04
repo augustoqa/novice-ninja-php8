@@ -69,11 +69,16 @@ class JokeWebsite implements \Ninja\Website
 
 	public function checkLogin(string $uri): ?string
 	{
-		$restrictedPages = ['joke/edit', 'joke/delete'];
+		$restrictedPages = [
+			'category/list' => Author::LIST_CATEGORIES
+		];
 
-		if (in_array($uri, $restrictedPages) && !$this->authentication->isLoggedIn()) {
-			header('location: /login/login');
-			exit();
+		if (isset($restrictedPages[$uri])) {
+			if (!$this->authentication->isLoggedIn() ||
+				!$this->authentication->getUser()->hasPermission($restrictedPages[$uri])) {
+				header('location: /login/login');
+				exit();
+			}
 		}
 
 		return $uri;

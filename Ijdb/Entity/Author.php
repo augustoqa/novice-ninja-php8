@@ -5,6 +5,13 @@ namespace Ijdb\Entity;
 use Ninja\DatabaseTable;
 
 class Author {
+	const EDIT_JOKE = 1;
+	const DELETE_JOKE = 2;
+	const LIST_CATEGORIES = 3;
+	const EDIT_CATEGORY = 4;
+	const DELETE_CATEGORY = 5;
+	const EDIT_USER_ACCESS = 6;
+	
 	public int $id;
 	public string $name;
 	public string $email;
