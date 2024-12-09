@@ -67,4 +67,32 @@ class Author
 			];
 		}
 	}
+
+	public function list()
+	{
+		return [
+			'template' => 'authorlist.html.php',
+			'title' => 'Author List',
+			'variables' => [
+				'authors' => $this->authorsTable->findAll(),
+			]
+		];
+	}
+
+	public function permissions($id = null)
+	{
+		$author = $this->authorsTable->find('id', $id)[0];
+
+		$reflected = new \ReflectionClass(\Ijdb\Entity\Author::class);
+		$constants = $reflected->getConstants();
+
+		return [
+			'template' => 'permissions.html.php',
+			'title' => 'Edit Permissions',
+			'variables' => [
+				'author' => $author,
+				'permissions' => $constants,
+			]
+		];
+	}
 }
