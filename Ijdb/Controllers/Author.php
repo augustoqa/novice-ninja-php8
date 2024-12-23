@@ -68,6 +68,18 @@ class Author
 		}
 	}
 
+	public function permissionsSubmit($id = null)
+	{
+		$author = [
+			'id' => $id,
+			'permissions' => array_sum($_POST['permissions'] ?? []),
+		];
+
+		$this->authorsTable->save($author);
+
+		header('location: /author/list');
+	}
+
 	public function list()
 	{
 		return [

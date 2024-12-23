@@ -84,3 +84,5 @@ CREATE TABLE `ijdb`.`joke_category` (
   `categoryId` INT NOT NULL,
   PRIMARY KEY (`jokeId`, `categoryId`)
 );
+
+ALTER TABLE author ADD COLUMN `permissions` INT(64) DEFAULT 0;
