@@ -9,7 +9,7 @@
 			value="<?= $value ?>" 
 			<?= $author->hasPermission($value) ? 'checked' : ''  ?> 
 		>
-		<label><?= $name ?></label>
+		<label><?= ucwords(strtolower(str_replace('_', ' ', $name))) ?></label>
 	</div>
 	<?php endforeach ?>
 
