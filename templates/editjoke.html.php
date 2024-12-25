@@ -1,4 +1,5 @@
-<?php if (empty($joke) || $userId == $joke->authorid): ?>
+<?php if (empty($joke) || $user->id == $joke->authorid 
+	|| $user->hasPermission(\Ijdb\Entity\Author::EDIT_JOKE)): ?>
 <form action="" method="post">
 	<input type="hidden" name="joke[id]" value="<?= $joke->id ?? '' ?>">
 	<label for="joketext">Type your joke here:</label>
@@ -10,12 +11,6 @@
 
 	<p>Select categories for this joke:</p>
 	<?php foreach ($categories as $category): ?>
-		<input 
-			type="checkbox" 
-			name="category[]" 
-			value="<?= $category->id ?>" 
-			<?= ($joke && $joke->hasCategory($category->id)) ? 'checked' : '' ?> 
-		/>
 		<?php if ($joke && $joke->hasCategory($category->id)): ?>	
 		<input type="checkbox" name="category[]" value="<?= $category->id ?>" checked />
 		<?php else: ?>

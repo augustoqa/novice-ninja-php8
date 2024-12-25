@@ -17,14 +17,21 @@
 					<?= htmlspecialchars($joke->getAuthor()->name, ENT_QUOTES, 'UTF-8') ?>
 				</a> on <?=$date->format('jS F Y')?>)
 
-				<?php if ($userId == $joke->authorid): ?>
-				<a href="/joke/edit/<?=$joke->id?>">Edit</a>
+				<?php if ($user): ?>
+					<?php if (empty($joke) || $user->isTheAuthor($joke->authorid)
+							|| $user->hasPermission(\Ijdb\Entity\Author::EDIT_JOKE)): ?>
+					<a href="/joke/edit/<?=$joke->id?>">Edit</a>
+					<?php endif; ?>
 
-				<form action="/joke/delete" method="post">
-					<input type="hidden" name="id" value="<?= $joke->id ?>">
-					<input type="submit" value="Delete">
-				</form>
-				<?php endif ?>
+					<?php if ($user->isTheAuthor($joke->authorid)
+							|| $user->hasPermission(\Ijdb\Entity\Author::DELETE_JOKE)): ?>
+					<form action="/joke/delete" method="post">
+						<input type="hidden" name="id" value="<?= $joke->id ?>">
+						<input type="submit" value="Delete">
+					</form>
+					<?php endif; ?>
+
+				<?php endif; ?>
 			</p>
 		</blockquote>
 		<?php endforeach ?>

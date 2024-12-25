@@ -37,4 +37,9 @@ class Author {
 	{
 		return $this->permissions & $permission;
 	}
+
+	public function isTheAuthor(int $id)
+	{
+		return $this->id === $id;
+	}
 }

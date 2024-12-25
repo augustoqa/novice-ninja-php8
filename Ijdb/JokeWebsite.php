@@ -70,7 +70,11 @@ class JokeWebsite implements \Ninja\Website
 	public function checkLogin(string $uri): ?string
 	{
 		$restrictedPages = [
-			'category/list' => Author::LIST_CATEGORIES
+			'category/list' => Author::LIST_CATEGORIES,
+			'category/delete' => Author::DELETE_CATEGORY,
+			'category/edit' => Author::EDIT_CATEGORY,
+			'author/permissions' => Author::EDIT_USER_ACCESS,
+			'author/list' => Author::EDIT_USER_ACCESS,
 		];
 
 		if (isset($restrictedPages[$uri])) {
